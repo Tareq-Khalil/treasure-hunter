@@ -37,7 +37,7 @@ export interface Clue{
 export interface GameState{
     unlockedLocations:string[];
     unlockedClues:string[];
-    solvePuzzled:string[];
+    solvedPuzzled:string[];
     currentNodeId:string;
     currentLocationId:string;
     dialogueHistory:{character:string;text:string}[];
