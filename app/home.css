@@ -1,0 +1,42 @@
+.th{--ink:#0a0e2e;--deep:#16276b;--sakura:#ff8fb1;--gold:#ffd36e;--aqua:#7fe7ff;position:relative;min-height:100svh;overflow:hidden;color:#fff8e7;font-family:var(--font-body),system-ui,sans-serif;background:linear-gradient(180deg,#05071c 0%,var(--ink) 30%,#2a2a7a 62%,#e0709a 88%,#ffb98a 100%)}
+.th *{box-sizing:border-box}
+.th-layer{position:absolute;inset:0;pointer-events:none}
+.th-star{position:absolute;border-radius:50%;background:#fff;animation:th-twinkle var(--d) ease-in-out infinite;animation-delay:var(--l)}
+@keyframes th-twinkle{0%,100%{opacity:.15;transform:scale(.7)}50%{opacity:1;transform:scale(1.3)}}
+.th-shoot{position:absolute;width:140px;height:2px;background:linear-gradient(90deg,transparent,#fff,var(--aqua));border-radius:2px;opacity:0;transform:rotate(-28deg);animation:th-shoot 7s linear infinite;animation-delay:var(--l)}
+@keyframes th-shoot{0%{opacity:0;translate:0 0}3%{opacity:1}12%{opacity:0;translate:-420px 230px}100%{opacity:0}}
+.th-moon{position:absolute;top:8%;right:10%;width:clamp(110px,18vw,220px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 35% 35%,#fffbe6,var(--gold) 70%,#f0a94a);box-shadow:0 0 60px 20px rgba(255,211,110,.35),0 0 180px 80px rgba(255,143,177,.25)}
+.th-moon::after{content:"";position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 60% 70%,rgba(200,140,60,.25) 0 12%,transparent 13%),radial-gradient(circle at 30% 60%,rgba(200,140,60,.2) 0 8%,transparent 9%)}
+.th-cloud{position:absolute;height:34px;border-radius:999px;background:rgba(255,200,230,.18);filter:blur(6px);animation:th-drift var(--d) linear infinite;animation-delay:var(--l)}
+@keyframes th-drift{from{translate:-30vw 0}to{translate:130vw 0}}
+.th-petal{position:absolute;top:-30px;width:14px;height:11px;background:linear-gradient(135deg,#ffd0e0,var(--sakura));border-radius:80% 0 80% 0;animation:th-fall var(--d) linear infinite;animation-delay:var(--l);opacity:.9}
+@keyframes th-fall{0%{translate:0 -5vh;rotate:0deg}50%{translate:60px 55vh;rotate:200deg}100%{translate:-40px 110vh;rotate:420deg}}
+.th-spark{position:absolute;width:6px;height:6px;background:var(--gold);border-radius:50%;box-shadow:0 0 12px 4px rgba(255,211,110,.7);animation:th-float var(--d) ease-in-out infinite;animation-delay:var(--l)}
+@keyframes th-float{0%,100%{translate:0 0;opacity:.3}50%{translate:20px -40px;opacity:1}}
+.th-rays{position:absolute;top:-30%;right:-10%;width:120%;height:120%;background:repeating-conic-gradient(from 0deg at 80% 25%,rgba(255,211,110,.07) 0 6deg,transparent 6deg 18deg);animation:th-spin 120s linear infinite}
+@keyframes th-spin{to{rotate:360deg}}
+.th-compass{position:absolute;left:50%;top:44%;width:min(88vw,720px);translate:-50% -50%;opacity:.22;animation:th-spin 90s linear infinite}
+.th-kanji{position:absolute;left:4%;bottom:14%;font-family:var(--font-title),serif;font-size:clamp(120px,24vw,320px);line-height:1;color:transparent;-webkit-text-stroke:2px rgba(255,211,110,.35);text-shadow:0 0 40px rgba(255,143,177,.3)}
+.th-content{position:relative;z-index:5;display:flex;min-height:100svh;flex-direction:column;align-items:center;justify-content:center;gap:1.6rem;padding:6rem 1.25rem 12rem;text-align:center}
+.th-badge{padding:.4rem 1.1rem;border:1px solid rgba(255,211,110,.6);border-radius:999px;background:rgba(10,14,46,.55);backdrop-filter:blur(6px);font-size:.85rem;letter-spacing:.12em;color:var(--gold)}
+.th-title{margin:0;font-family:var(--font-title),serif;font-weight:900;font-size:clamp(3rem,11vw,8rem);line-height:.95;letter-spacing:.02em;background:linear-gradient(180deg,#fffbe6 10%,var(--gold) 55%,var(--sakura) 100%);-webkit-background-clip:text;background-clip:text;color:transparent;filter:drop-shadow(0 4px 0 #7a2f5f) drop-shadow(0 0 28px rgba(255,143,177,.55));animation:th-glow 4s ease-in-out infinite}
+@keyframes th-glow{50%{filter:drop-shadow(0 4px 0 #7a2f5f) drop-shadow(0 0 46px rgba(255,211,110,.8))}}
+.th-tag{margin:0;max-width:34ch;font-size:clamp(1.05rem,2.6vw,1.5rem);font-style:italic;color:#ffe9f1;text-shadow:0 2px 12px #000}
+.th-cta{display:flex;flex-wrap:wrap;justify-content:center;gap:1rem}
+.th-btn{position:relative;overflow:hidden;display:inline-block;padding:.95rem 2.1rem;border-radius:999px;font-weight:700;font-size:1.05rem;text-decoration:none;color:var(--ink);background:linear-gradient(135deg,var(--gold),#ffa5c0);border:2px solid #fff8e7;box-shadow:0 6px 0 #7a2f5f,0 0 30px rgba(255,211,110,.5);transition:translate .15s,box-shadow .15s}
+.th-btn:hover{translate:0 3px;box-shadow:0 3px 0 #7a2f5f,0 0 40px rgba(255,211,110,.8)}
+.th-btn::after{content:"";position:absolute;top:0;left:-60%;width:40%;height:100%;background:linear-gradient(100deg,transparent,rgba(255,255,255,.8),transparent);skew:-20deg;animation:th-shine 3.5s ease-in-out infinite}
+@keyframes th-shine{0%,60%{left:-60%}100%{left:130%}}
+.th-btn.alt{color:#fff8e7;background:rgba(10,14,46,.6);backdrop-filter:blur(6px);box-shadow:0 6px 0 #0a0e2e,0 0 24px rgba(127,231,255,.4);border-color:var(--aqua)}
+.th-btn:focus-visible{outline:3px solid var(--aqua);outline-offset:4px}
+.th-feats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:.9rem;width:min(760px,100%);margin-top:.6rem}
+.th-feat{padding:.9rem 1rem;border-radius:18px;background:rgba(10,14,46,.5);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,.2);font-size:.95rem}
+.th-feat b{display:block;color:var(--gold);margin-bottom:.15rem}
+.th-sea{position:absolute;left:0;right:0;bottom:0;z-index:3;height:34%;pointer-events:none}
+.th-wave{position:absolute;left:0;bottom:0;width:200%;height:100%;animation:th-slide var(--d) linear infinite}
+@keyframes th-slide{to{translate:-50% 0}}
+.th-ship{position:absolute;z-index:4;left:12%;bottom:22%;width:clamp(120px,18vw,220px);filter:drop-shadow(0 0 16px rgba(0,0,0,.6))}
+.th-lantern{position:absolute;z-index:4;width:54px;height:66px;border-radius:40% 40% 46% 46%;background:radial-gradient(circle at 50% 40%,#fff3c4,var(--gold) 60%,#ff9a4d);box-shadow:0 0 26px 10px rgba(255,180,90,.55);animation:th-float var(--d) ease-in-out infinite;animation-delay:var(--l)}
+.th-lantern::before{content:"";position:absolute;left:30%;top:42%;width:8px;height:8px;border-radius:50%;background:#5a2a12;box-shadow:16px 0 #5a2a12}
+.th-lantern::after{content:"";position:absolute;left:44%;top:60%;width:10px;height:5px;border-radius:0 0 10px 10px;background:#d1495b}
+@media (prefers-reduced-motion:reduce){.th *,.th::before{animation:none!important}}
