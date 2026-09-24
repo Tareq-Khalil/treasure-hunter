@@ -1,4 +1,30 @@
 @import "tailwindcss";
+@theme inline{
+  --font-serif:var(--font-cinzel),Georgia,serif;
+  --font-sans:var(--font-inter),system-ui,sans-serif;
+}
+@theme{
+  --color-nautical-950:#040d1a;
+  --color-nautical-900:#071018;
+  --color-nautical-800:#0f1f2e;
+  --color-nautical-700:#1a334a;
+  --color-parchment:#f1e6d0;
+  --color-gold-300:#fef08a;
+  --color-gold-400:#facc15;
+  --color-gold-500:#d4af37;
+  --color-gold-600:#ca8a04;
+  --animate-shake:shake 0.4s ease-in-out;
+  --animate-puse-glow:pulse-glow 3s infinite ease-in-out;
+  @keyframes shake{
+    0%,100%{transform:translateX(0);}
+    20%,60%{transform:translateX(-6px);}
+    40%,80%{tranform:translateX(6px);}
+  }
+  @keyframes pulse-glow{
+    0%,100%{opaity:0.4;filter:drop-shadow(0 0 5px rgba(212,175,55,0.4));}
+    50%{opacity:0.9;filter:drop-shadow(0 0 15px rgba(212,175,55,0.8));}
+  }
+}
 @layer base {
   body{
     background-color:#020617;
