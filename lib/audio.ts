@@ -6,7 +6,7 @@ class SoundEngine {
             this.ctx = new AudioCtx();
         }
     }
-    platTypewriter() {
+    playTypewriter() {
         this.init();
         if (!this.ctx) return;
         const osc = this.ctx.createOscillator();
