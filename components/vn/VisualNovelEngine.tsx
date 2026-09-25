@@ -57,8 +57,8 @@ export const VisualNovelEngine: React.FC<VisualNovelEngineProps> = ({ nodeId, on
                                 }}
                                 className="w-full text-left px-4 py-2.5 rounded-lg bg-slate-900/80 hover:bg-amber-500/20 border border-amber-500/30 hover:border-amber-400 text-amber-200 hover:text-amber-300 font-medium transition-all duration-200 flex items-center justify-between group"
                             >
-                                <span> {choice.text}</span>
-                                <span className="opacity-0 group-hover:opacity-100 text-amber-400 transition-opacity"></span>
+                                <span>❖ {choice.text}</span>
+                                <span className="opacity-0 group-hover:opacity-100 text-amber-400 transition-opacity">➔</span>
                             </button>
                         ))}
                     </div>
