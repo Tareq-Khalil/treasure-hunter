@@ -44,7 +44,7 @@ function Body({coat,skirt}:{coat:string;skirt:string}){
         </>
     );
 }
-export function GirlHunter({src,alt}:Custom){
+export function Lara({src,alt}:Custom){
     if (src) return <img className="th-char-img" src={src} alt={alt ?? ""}/>;
     return(
         <svg viewBox="0 0 200 300" className="th-char-svg" role="img" aria-label="Anime treasure hunter girl waving">
@@ -62,7 +62,7 @@ export function GirlHunter({src,alt}:Custom){
         </svg>
     );
 }
-export function BoyExplorer({ src, alt }: Custom) {
+export function Sieg({ src, alt }: Custom) {
     if (src) return <img className="th-char-img" src={src} alt={alt ?? ""} />;
     return (
         <svg viewBox="0 0 200 300" className="th-char-svg" role="img" aria-label="Anime explorer boy waving">
@@ -76,7 +76,7 @@ export function BoyExplorer({ src, alt }: Custom) {
         </svg>
     );
 }
-export function FoxSpirit({ src, alt }: Custom) {
+export function Roxy({ src, alt }: Custom) {
     if (src) return <img className="th-char-img" src={src} alt={alt ?? ""} />;
     return (
         <svg viewBox="0 0 160 160" className="th-char-svg" role="img" aria-label="Fox spirit holding a gold coin">
