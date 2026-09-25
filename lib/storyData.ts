@@ -4,21 +4,21 @@ export const CHARACTERS: Record<string, Character>={
         id:'lara',
         name:'Lara Greyrat',
         role:'Expedition Commander',
-        portraitUrl:'',
+        portraitUrl:'lara.png',
         themeColor:'#53B6EB'
     },
     roxy:{
         id:'roxy',
         name:'Roxy Megurdia',
         role:'Cryptographer & Historian',
-        portraitUrl:'',
+        portraitUrl:'roxy.png',
         themeColor:'#006F9F'
     },
     sieg:{
         id:'sieg',
         name:'Air lord Sieg',
         role:'Island Surveyor',
-        portraitUrl:'',
+        portraitUrl:'sieg.png',
         themeColor:'#34d399'
     }
 };
