@@ -14,14 +14,14 @@
   --color-gold-500:#d4af37;
   --color-gold-600:#ca8a04;
   --animate-shake:shake 0.4s ease-in-out;
-  --animate-puse-glow:pulse-glow 3s infinite ease-in-out;
+  --animate-pulse-glow:pulse-glow 3s infinite ease-in-out;
   @keyframes shake{
     0%,100%{transform:translateX(0);}
     20%,60%{transform:translateX(-6px);}
-    40%,80%{tranform:translateX(6px);}
+    40%,80%{transform:translateX(6px);}
   }
   @keyframes pulse-glow{
-    0%,100%{opaity:0.4;filter:drop-shadow(0 0 5px rgba(212,175,55,0.4));}
+    0%,100%{opacity:0.4;filter:drop-shadow(0 0 5px rgba(212,175,55,0.4));}
     50%{opacity:0.9;filter:drop-shadow(0 0 15px rgba(212,175,55,0.8));}
   }
 }
@@ -30,7 +30,7 @@
     background-color:#020617;
     color:#f1f5f9;
     -webkit-font-smoothing:antialiased;
-    -moz-osx-font-something:grayscale;
+    -moz-osx-font-smoothing:grayscale;
     font-feature-settings:"kern"1,"calt"1;
   }
   ::selection{
@@ -48,5 +48,9 @@
   background:#facc15;
 }
 .nautical-vignette{
-  background:radial-gradient(circle at center,transparent 40%,rgba(4,13,26.0.85) 90%);
+  background:radial-gradient(circle at center,transparent 40%,rgba(4,13,26,0.85) 90%);
 }
+.sky-bg{position:relative;min-height:100svh;overflow:hidden;background:linear-gradient(180deg,#040d1a 0%,#071018 45%,#0f1f2e 100%)}
+.sky-star{position:absolute;border-radius:50%;background:var(--color-gold-300,#fef08a);opacity:.6;animation:sky-twinkle var(--d,4s) ease-in-out infinite;animation-delay:var(--l,0s)}
+@keyframes sky-twinkle{0%,100%{opacity:.12;transform:scale(.7)}50%{opacity:.85;transform:scale(1.2)}}
+@media (prefers-reduced-motion:reduce){.sky-star{animation:none;opacity:.5}}

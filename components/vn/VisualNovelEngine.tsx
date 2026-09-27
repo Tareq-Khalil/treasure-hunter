@@ -1,5 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
 import { STORY_NODES, CHARACTERS } from '@/lib/storyData';
 import { AnimePortrait } from './AnimePortrait';
 import { soundFx } from '@/lib/audio';
@@ -35,32 +36,32 @@ export const VisualNovelEngine: React.FC<VisualNovelEngineProps> = ({ nodeId, on
             <div className="flex-shrink-0">
                 <AnimePortrait characterId={node.characterId} expression={node.expression} />
             </div>
-            <div className="flex-1 w-full bg-slate-950/90 border-2 border-amber-500/40 backdrop-blur-md rounded-2xl p-6 shadow-2xl relative">
-                <div
-                    className="absolute -top-4 left-6 px-4 py-1 rounded-md font-serif text-sm font-bold shadow-lg border border-amber-400/50"
-                    style={{ backgroundColor: character?.themeColor || '#d4af37', color: '#071018' }}
-                >
+            <div className="flex-1 w-full bg-nautical-950/90 border-2 border-gold-500/40 backdrop-blur-md rounded-2xl p-6 shadow-2xl shadow-black/50 relative">
+                <div className="absolute -top-4 left-6 px-4 py-1 rounded-md font-serif text-sm font-bold shadow-lg border border-gold-400/50" style={{ backgroundColor: character?.themeColor || '#d4af37', color: '#071018' }}>
                     {character?.name || 'System Notice'}
                 </div>
-                <p className="text-amber-100 font-serif text-lg leading-relaxed min-h-[5rem] pt-2">
+                <p className="text-parchment font-serif text-lg leading-relaxed min-h-[5rem] pt-2">
                     {displayedText}
-                    {isTyping && <span className="inline-block w-2 h-5 bg-amber-400 ml-1 animate-ping" />}
+                    {isTyping && <span className="inline-block w-2 h-5 bg-gold-400 ml-1 animate-ping" />}
                 </p>
                 {!isTyping && node.choices && node.choices.length > 0 && (
                     <div className="mt-4 space-y-2">
                         {node.choices.map((choice, idx) => (
-                            <button
-                                key={idx}
-                                onClick={() => {
-                                    soundFx.playClick();
-                                    onChoiceSelect(choice.nextNodeId, choice.unlockClueId, choice.unlockLocationId);
-                                }}
-                                className="w-full text-left px-4 py-2.5 rounded-lg bg-slate-900/80 hover:bg-amber-500/20 border border-amber-500/30 hover:border-amber-400 text-amber-200 hover:text-amber-300 font-medium transition-all duration-200 flex items-center justify-between group"
-                            >
+                            <button key={idx}onClick={() => { soundFx.playClick(); onChoiceSelect(choice.nextNodeId, choice.unlockClueId, choice.unlockLocationId);}} className="w-full text-left px-4 py-2.5 rounded-lg bg-nautical-900/70 hover:bg-gold-500/15 border border-gold-500/25 hover:border-gold-400 text-parchment/90 hover:text-gold-300 font-medium transition-all duration-200 flex items-center justify-between group">
                                 <span>❖ {choice.text}</span>
-                                <span className="opacity-0 group-hover:opacity-100 text-amber-400 transition-opacity">➔</span>
+                                <span className="opacity-0 group-hover:opacity-100 text-gold-400 transition-opacity">➔</span>
                             </button>
                         ))}
+                    </div>
+                )}
+                {!isTyping && (!node.choices || node.choices.length === 0) && (
+                    <div className="mt-5 pt-4 border-t border-gold-500/20 flex flex-col sm:flex-row items-center justify-between gap-3">
+                        <p className="text-[11px] uppercase tracking-widest font-mono text-gold-400/80">
+                            &mdash; End of recovered log &mdash;
+                        </p>
+                        <Link href="/" className="px-4 py-2 rounded-lg bg-gold-500 hover:bg-gold-400 text-nautical-950 font-bold uppercase tracking-wider text-[11px] transition-all shadow-md">
+                            Return to Archive
+                        </Link>
                     </div>
                 )}
             </div>

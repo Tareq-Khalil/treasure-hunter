@@ -41,12 +41,13 @@
 .th-lantern::after{content:"";position:absolute;left:44%;top:60%;width:10px;height:5px;border-radius:0 0 10px 10px;background:#d1495b}
 @media (prefers-reduced-motion:reduce){.th *,.th::before{animation:none!important}}
 
-.th-char{position:absolute;z-index:6;pointer-events:none}
+.th-char{position:absolute;z-index:6;pointer-events:none;display:flex;flex-direction:column;align-items:center}
 .th-char-svg,.th-char-img{display:block;width:100%;height:auto;filter:drop-shadow(0 8px 14px rgba(0,0,0,.5)) drop-shadow(0 0 14px rgba(255,211,110,.25))}
-.th-girl{left:2%;bottom:4%;width:clamp(96px,17vw,250px)}
-.th-boy{right:2%;bottom:4%;width:clamp(96px,16vw,235px)}
-.th-fox{right:14%;top:40%;width:clamp(64px,9vw,120px)}
-.th-bubble{position:absolute;left:58%;top:-2.2rem;padding:.35rem .8rem;border-radius:16px 16px 16px 2px;background:#fff8e7;color:var(--ink);font-weight:700;font-size:clamp(.65rem,1.2vw,.9rem);white-space:nowrap;box-shadow:0 4px 0 #7a2f5f;transform-origin:0 100%}
+.th-glow{position:absolute;left:50%;bottom:-6%;width:130%;aspect-ratio:2.6/1;translate:-50% 0;border-radius:50%;background:radial-gradient(closest-side,rgba(255,211,110,.38),rgba(255,143,177,.16) 55%,transparent 78%);filter:blur(2px);z-index:-1}
+.th-girl{left:1%;bottom:2%;width:clamp(120px,20vw,300px);z-index:7}
+.th-boy{right:1%;bottom:2%;width:clamp(112px,18.5vw,275px);z-index:7}
+.th-roxy{left:50%;bottom:3%;translate:-50% 0;width:clamp(84px,13vw,190px);z-index:6}
+.th-bubble{position:absolute;left:58%;top:-2.2rem;padding:.35rem .8rem;border-radius:16px 16px 16px 2px;background:#fff8e7;color:var(--ink);font-weight:700;font-size:clamp(.65rem,1.2vw,.9rem);white-space:nowrap;box-shadow:0 4px 0 #7a2f5f;transform-origin:0 100%;z-index:2}
 .th-eyes{transform-box:fill-box;transform-origin:center;animation:th-blink 4.5s infinite}
 @keyframes th-blink{0%,92%,100%{transform:scaleY(1)}95%{transform:scaleY(.08)}}
 .th-sway{transform-box:fill-box;transform-origin:50% 0;animation:th-sway 3.4s ease-in-out infinite}
@@ -55,4 +56,4 @@
 @keyframes th-wave{0%,100%{rotate:-6deg}50%{rotate:14deg}}
 .th-coin{transform-box:fill-box;transform-origin:center;animation:th-coin 2.4s ease-in-out infinite}
 @keyframes th-coin{0%,100%{scale:1 1}50%{scale:.15 1}}
-@media (max-width:640px){.th-fox{display:none}.th-girl,.th-boy{opacity:.95}}
+@media (max-width:640px){.th-roxy{width:clamp(70px,17vw,130px)}.th-girl,.th-boy{opacity:.97}}

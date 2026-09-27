@@ -18,23 +18,21 @@ export const UVJournal: React.FC<UVJournalProps> = ({ onSolve}) => {
             setFoundSecret(true);
             soundFx.playSuccess();
         }
-
     };
     return (
         <div className="flex flex-col items-center gap-4 w-full max-w-2xl mx-auto">
             <div className="text-center">
-                <h3 className="text-xl font-serif text-amber-300">
+                <h3 className="text-xl font-serif text-gold-300">
                     UV Light Journal Inspector
                 </h3>
-                <p className="text-xs text-slate-400">
+                <p className="text-xs text-parchment/60">
                     Drag your cursor light across the parchment page to reveal hidden phosphor ink notes.
                 </p>
             </div>
             <div
               ref={containerRef}
               onMouseMove={handleMouseMove}
-              className="relative w-full h-80 rounded-xl overflow-hidden cursor-crosshair border-2 border-amber-600/40 shadow-2xl bg-[#f1e6d0]"
-              >
+              className="relative w-full h-80 rounded-xl overflow-hidden cursor-crosshair border-2 border-gold-600/40 shadow-2xl shadow-black/50 bg-parchment">
                 <div className="absolute inset-0 p-8 text-amber-950 font-serif leading-relaxed opacity-80 select-none">
                     <p className="font-bold text-lg border-b border-amber-900/20 pb-2 mb-4">
                         Logbook - October 1892
@@ -50,9 +48,7 @@ export const UVJournal: React.FC<UVJournalProps> = ({ onSolve}) => {
                 className="absolute inset-0 p-8 text-cyan-300 font-mono bg-slate-950/95 select-none pointer-events-none"
                 style={{
                     maskImage: `radial-gradient(circle 100px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`,
-                    WebkitMaskImage: `radial-gradient(circle 100px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`,
-                }}
-                >
+                    WebkitMaskImage: `radial-gradient(circle 100px at ${mousePos.x}px ${mousePos.y}px, black 30%, transparent 100%)`,}}>
                     <p className="font-bold text-lg opacity-20 text-slate-500">
                         Logbook - October 1892
                     </p>
@@ -72,7 +68,7 @@ export const UVJournal: React.FC<UVJournalProps> = ({ onSolve}) => {
                         soundFx.playClick();
                         onSolve();
                     }}
-                    className="px-6 py-2.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-slate-950 font-bold uppercase tracking-wider text-xs transition-all shadow-lg animate-bounce">
+                    className="px-6 py-2.5 rounded-lg bg-gold-500 hover:bg-gold-400 text-nautical-950 font-bold uppercase tracking-wider text-xs transition-all shadow-lg animate-bounce">
                         Record Clue into Codex ➔
                     </button>
               )}

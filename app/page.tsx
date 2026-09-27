@@ -22,7 +22,7 @@ export default function Home() {
   const shipX = useTransform(sx, (v) => v * 26);
   const kanjiX = useTransform(sx, (v) => v * 40);
   const charX = useTransform(sx, (v) => v * -16);
-  const art = { girl: undefined as string | undefined, boy: undefined as string | undefined, fox: undefined as string | undefined };
+  const art = { girl: "/lara.png", boy: "/sieg.png", roxy: "/roxy.png" };
   return(
     <main 
       className={`th ${title.variable} ${body.variable}`}
@@ -67,18 +67,23 @@ export default function Home() {
         <path d="M100 8 L128 16 L100 24Z" fill="#d1495b" />
       </motion.svg>
       <motion.div className="th-char th-girl" style={{ x: charX }} initial={{ opacity: 0, y: 80 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2, type:"spring", stiffness: 70 }}>
+        <div className="th-glow"/>
         <motion.div animate={{ y: [0, -12, 0] }} transition={{ duration: 3.2, repeat: Infinity, ease: "easeInOut" }}>
           <motion.div className="th-bubble" initial={{ scale: 0 }} animate={{ scale: [0, 1, 1, 0] }}transition={{ delay: 2.4, duration: 5, repeat: Infinity, repeatDelay: 4 }}>Ready for the hunt?!</motion.div>
-          <Lara src={art.girl} />
+          <Lara src={art.girl} alt="Lara Greyrat, the Expedition Commander" />
         </motion.div>
       </motion.div>
       <motion.div className="th-char th-boy" style={{ x: charX }} initial={{ opacity: 0, y: 80 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.5, type: "spring", stiffness: 70}}>
+        <div className="th-glow"/>
         <motion.div animate={{ y: [0, -10, 0] }} transition={{ duration: 3.8, repeat: Infinity, ease: "easeInOut", delay: 0.6 }}>
-          <Sieg src={art.boy} />
+          <Sieg src={art.boy} alt="Air Lod Sieg, the Island Surveyor"/>
         </motion.div>
       </motion.div>
-      <motion.div className="th-char th-fox" animate={{ y: [0, -22, 0], x: [0, 18, 0], rotate: [-4, 4, -4] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}>
-        <Roxy src={art.fox} />
+      <motion.div className="th-char th-roxy" initial={{opacity:0,y:60}} animate={{opacity:1,y:0}} transition={{delay:1.8,type:"spring",stiffness:70}}>
+        <div className="th-glow"/>
+        <motion.div animate={{y:[0,-9,0]}} transition={{duration:4.4,repeat:Infinity,ease:"easeInOut",delay:0.3}}>
+          <Roxy src={art.roxy} alt="Roxy Megurdia, the Cryptographer & Historian"/>
+        </motion.div>
       </motion.div>
       <div className="th-sea" aria-hidden>
         {[["#3a2f8f", 0.55, "26s"], ["#1e3a8a", 0.75, "18s"], ["#0a1240", 1, "12s"]].map(([c, o, d], i) => (

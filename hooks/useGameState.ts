@@ -10,51 +10,60 @@ const INITIAL_STATE: GameState = {
     currentNodeId: 'prologue_start',
     currentLocationId: 'abandoned_dock',
     dialogueHistory: []
-
 };
 export function useGameState() {
     const [gameState, setGameState] = useState<GameState>(INITIAL_STATE);
     const [loading, setLoading] = useState(true);
+    const [cloudSynced, setCloudSynced] = useState(false);
     const supabase = createClient();
     useEffect(() => {
         async function loadProgress() {
-            const { data: { user } } = await supabase.auth.getUser();
-            if(user) {
-                const { data } = await supabase
-                  .from('expedition_progress')
-                  .select('*')
-                  .eq('user_id', user.id)
-                  .single();
-                if (data) {
-                    setGameState(prev => ({
-                        ...prev,
-                        unlockedLocations: data.unlocked_locations || prev.unlockedLocations,
-                        unlockedClues: data.unlocked_clues || prev.unlockedClues,
-                        solvedPuzzles: data.solved_puzzles || prev.solvedPuzzles,
-                        currentNodeId: data.current_node || prev.currentNodeId
-                    }));
-                }
-                
+            if (!supabase) {
+                setLoading(false);
+                return;
             }
+            try {
+                const { data: { user } } = await supabase.auth.getUser();
+                if (user) {
+                    const { data } = await supabase
+                      .from('expedition_progress')
+                      .select('*')
+                      .eq('user_id', user.id)
+                      .single();
+                    if (data) {
+                        setGameState(prev => ({
+                            ...prev,
+                            unlockedLocations: data.unlocked_locations || prev.unlockedLocations,
+                            unlockedClues: data.unlocked_clues || prev.unlockedClues,
+                            solvedPuzzles: data.solved_puzzles || prev.solvedPuzzles,
+                            currentNodeId: data.current_node || prev.currentNodeId
+                        }));
+                    }
+                    setCloudSynced(true);
+                }
+            } catch {}
             setLoading(false);
         }
         loadProgress();
-    
     }, []);
     const saveProgress = async (newState: Partial<GameState>) => {
         const updated = { ...gameState, ...newState };
         setGameState(updated);
-        const { data: { user } } = await supabase.auth.getUser();
-        if (user) {
-            await supabase.from('expedition_progress').upsert({
-                user_id: user.id,
-                unlocked_locations: updated.unlockedLocations,
-                unlocked_clues: updated.unlockedClues,
-                solved_puzzles: updated.solvedPuzzles,
-                current_node: updated.currentNodeId,
-                completion_percentage: Math.min(100, Math.round((updated.solvedPuzzles.length/3) * 100))
-            });
-        }
+        if (!supabase) return;
+        try {
+            const { data: { user } } = await supabase.auth.getUser();
+            if (user) {
+                await supabase.from('expedition_progress').upsert({
+                    user_id: user.id,
+                    unlocked_locations: updated.unlockedLocations,
+                    unlocked_clues: updated.unlockedClues,
+                    solved_puzzles: updated.solvedPuzzles,
+                    current_node: updated.currentNodeId,
+                    completion_percentage: Math.min(100, Math.round((updated.solvedPuzzles.length/3) * 100))
+                }, { onConflict: 'user_id' });
+                setCloudSynced(true);
+            }
+        } catch {}
     };
     const advanceDialogue = (nextNodeId: string, unlockClueId?: string, unlockLocationId?: string) => {
         const updatedClues = unlockClueId && !gameState.unlockedClues.includes(unlockClueId)
@@ -83,5 +92,5 @@ export function useGameState() {
             });
         }
     };
-    return { gameState, loading, advanceDialogue, selectLocation, saveProgress };
+    return { gameState, loading, cloudSynced, advanceDialogue, selectLocation, saveProgress };
 }

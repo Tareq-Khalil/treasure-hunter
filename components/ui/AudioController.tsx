@@ -58,7 +58,7 @@ export const AudioController: React.FC=()=>{
         }
     };
     return(
-        <button onClick={toggleAudio} title={isMuted ? "Enable Ambient" : "Mute Ambient Audio"} className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-slate-950/80 border border-amber-500/40 text-amber-300 hover:bg-amber-500 hover:text-slate-950 transition-all shadow-xl backdrop-blur-md">
+        <button onClick={toggleAudio} title={isMuted ? "Enable Ambient" : "Mute Ambient Audio"} className="fixed bottom-6 right-6 z-50 p-3 rounded-full bg-nautical-950/80 border border-gold-500/40 text-gold-300 hover:bg-gold-500 hover:text-nautical-950 transition-all shadow-xl backdrop-blur-md">
             {isMuted ? <VolumeX size={18} /> : <Volume2 size={18} className="animate-pulse"/>}
         </button>
     );

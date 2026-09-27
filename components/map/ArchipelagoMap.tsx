@@ -14,13 +14,13 @@ export const ArchipelagoMap: React.FC<ArchipelagoMapProps> = ({
     onSelectLocation,
 }) => {
     return (
-        <div className="relative w-full max-w-4xl mx-auto h-80 md:h-96 rounded-2xl bg-slate-950 border-2 border-amber-500/40 shadow-2xl overflow-hidden nautical-vignette p-4">
-            <div className="absolute top-4 right-4 opacity-20 pointer-events-none font-serif text-[10px] text-amber-300 text-center">
-                <div className="w-16 h-16 rounded-full border border-amber-400 flex items-center justify center">
+        <div className="relative w-full max-w-4xl mx-auto h-80 md:h-96 rounded-2xl bg-nautical-950 border-2 border-gold-500/40 shadow-2xl overflow-hidden nautical-vignette p-4">
+            <div className="absolute top-4 right-4 opacity-20 pointer-events-none font-serif text-[10px] text-gold-300 text-center">
+                <div className="w-16 h-16 rounded-full border border-gold-400 flex items-center justify-center">
                     N
                 </div>
             </div>
-            <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none stroke-amber-400">
+            <svg className="absolute inset-0 w-full h-full opacity-10 pointer-events-none stroke-gold-400">
                 <defs>
                     <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
                         <path d="M 40 0 L 0 0 0 40" fill="none" strokeWidth="0.5"/>
@@ -32,10 +32,9 @@ export const ArchipelagoMap: React.FC<ArchipelagoMapProps> = ({
                 <path
                     d="M 180 250 L 380 130 L 620 200" 
                     fill="none"
-                    stroke="rgba(212, 175, 55,0.3"
+                    stroke="rgba(212, 175, 55, 0.3)"
                     strokeWidth="2"
-                    strokeDasharray="6 6"
-                />
+                    strokeDasharray="6 6"/>
             </svg>
             {LOCATIONS.map((location) => {
                 const isUnlocked = unlockedLocations.includes(location.id);
@@ -44,8 +43,7 @@ export const ArchipelagoMap: React.FC<ArchipelagoMapProps> = ({
                     <div
                         key={location.id}
                         style={{ left: `${location.coordinates.x}%`, top: `${location.coordinates.y}%`}}
-                        className="absolute transform -translate-x-1/2 -translate-y-1/2 z-20"
-                    >
+                        className="absolute transform -translate-x-1/2 -translate-y-1/2 z-20">
                         <button
                             disabled={!isUnlocked}
                             onClick={() => {
@@ -54,22 +52,20 @@ export const ArchipelagoMap: React.FC<ArchipelagoMapProps> = ({
                             }}
                             className={`group relative flex flex-col items-center transition-transform duration-300 ${
                                 isUnlocked ? 'cursor-pointer hover:scale-110' : 'cursor-not-allowed opacity-60'
-                            }`}
-                        >
+                            }`}>
                             <div
                                 className={`w-10 h-10 rounded-full flex items-center justify-center border-2 transition-all ${
                                     isSelected
-                                    ? 'bg-amber-400 border-amber-300 text-slate-950 shadow-[0_0_20px_rgba(250,204, 21,0.8)] animate-pulse'
+                                    ? 'bg-gold-400 border-gold-300 text-nautical-950 shadow-[0_0_20px_rgba(250,204,21,0.8)] animate-pulse'
                                     :isUnlocked
-                                    ? 'bg-slate-900 border-amber-500/70 text-amber-400 hover:border-amber-300'
-                                    : 'bg-slate-950 border-slate-700 text-slate-600'
-                                }`}
-                            >
+                                    ? 'bg-nautical-900 border-gold-500/70 text-gold-400 hover:border-gold-300'
+                                    : 'bg-nautical-950 border-nautical-700 text-parchment/30'
+                                }`}>
                                 {isUnlocked ? <MapPin size={18} /> : <Lock size={16} />}
                             </div>
-                            <div className="absolute top-12 whitespace-nowrap bg-slate-950/90 border-amber-500/30 backdrop-blur-md px-3 py-1 rounded-md text-center shadow-lg pointer-events-none">
-                                <p className="text-xs font-serif font-bold text-amber-300">{location.name}</p>
-                                <p className="text-[10px] text-slate-400">{location.subtitle}</p>
+                            <div className="absolute top-12 whitespace-nowrap bg-nautical-950/90 border border-gold-500/30 backdrop-blur-md px-3 py-1 rounded-md text-center shadow-lg pointer-events-none">
+                                <p className="text-xs font-serif font-bold text-gold-300">{location.name}</p>
+                                <p className="text-[10px] text-parchment/50">{location.subtitle}</p>
                             </div>
                         </button>
                     </div>

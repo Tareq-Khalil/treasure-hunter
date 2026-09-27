@@ -58,9 +58,10 @@ class SoundEngine {
         const gain = this.ctx.createGain();
         osc.type = 'square';
         osc.frequency.setValueAtTime(120, this.ctx.currentTime);
-        gain.gain.setValueAtTime(0.08, this.ctx.currentTime + 0.03);
+        gain.gain.setValueAtTime(0.08, this.ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001,this.ctx.currentTime+0.03);
         osc.connect(gain);
-        gain.connect(gain);
+        gain.connect(this.ctx.destination);
         osc.start();
         osc.stop(this.ctx.currentTime + 0.03);
     }

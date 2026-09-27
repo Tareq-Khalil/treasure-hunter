@@ -28,14 +28,13 @@ export const EmberVault: React.FC<EmberVaultProps> = ({ onSolve }) => {
         }
     };
     return (
-        <div className="flex flex-col items-center gap-6 w-full max-w-xs mx-auto p-6 bg-slate-950 border-2 border-amber-600/50 rounded-2xl shadow-2xl">
+        <div className="flex flex-col items-center gap-6 w-full max-w-xs mx-auto p-6 bg-nautical-950 border-2 border-gold-600/50 rounded-2xl shadow-2xl shadow-black/50">
             <div className="text-center">
-                <h3 className="text-lg font-serif text-amber-400">Ember Monolith Keypad</h3>
-                <p className="text-[11px] text-slate-400">Enter the 4-digit cipher combination</p>
+                <h3 className="text-lg font-serif text-gold-400">Ember Monolith Keypad</h3>
+                <p className="text-[11px] text-parchment/60">Enter the 4-digit cipher combination</p>
             </div>
-            <div className={`w-full h-12 rounded-lg bg-slate-900 border flex items-center justify-center font-mono text-2xl tracking-widest &{
-                status === 'ERROR' ? 'border-red-500 text-red-500' : status === 'SUCCESS' ? 'border-emerald-500 text-emerald-400' : border-amber-500/40 text-amber-300'
-            }`}>
+            <div className={`w-full h-12 rounded-lg bg-nautical-900 border flex items-center justify-center font-mono text-2xl tracking-widest ${
+                status === 'ERROR' ? 'border-red-500 text-red-500' : status === 'SUCCESS' ? 'border-emerald-500 text-emerald-400' : 'border-gold-500/40 text-gold-300'}`}>
                 {code.padEnd(4, '•')}
             </div>
             <div className="grid grid-cols-3 gap-3 w-full">
@@ -43,8 +42,7 @@ export const EmberVault: React.FC<EmberVaultProps> = ({ onSolve }) => {
                     <button
                         key={num}
                         onClick={() => handleKeyPress(num)}
-                        className="h-12 rounded-lg bg-slate-900 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 font-mono text-lg font-bold transition-all active:scale-95 flex items-center justify-center shadow"
-                    >
+                        className="h-12 rounded-lg bg-nautical-900 hover:bg-gold-500/20 border border-gold-500/30 text-gold-300 font-mono text-lg font-bold transition-all active:scale-95 flex items-center justify-center shadow">
                         {num}
                     </button>
                 ))}

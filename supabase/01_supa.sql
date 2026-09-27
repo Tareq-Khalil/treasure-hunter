@@ -7,7 +7,7 @@ create table public.profiles(
 );
 create table public.expedition_progress(
     id uuid default uuid_generate_v4() primary key,
-    user_id uuid references public.profiles(id) on delete casade unique not null,
+    user_id uuid references public.profiles(id) on delete cascade unique not null,
     unlocked_locations text[] default array['abandoned_dock']::text[],
     unlocked_clues text[] default array[]::text[],
     solved_puzzles text[] default array[]::text[],
