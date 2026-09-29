@@ -23,9 +23,9 @@ Treasure Hunter is a puzzle and exploration game built around discovering clues,
 ### Dependencies
 
 Before running Treasure Hunter, make sure you have:
-A modern web browser
-An internet connection
-Any dependencies specified by the project's package manager
+- A modern web browser
+- An internet connection
+- Any dependencies specified by the project's package manager
 
 ### Installing
 
@@ -54,11 +54,11 @@ Start the development server:
 Then:
 
 Open the local URL shown in the terminal.
-Enter the game.
-Explore the available clues and challenges.
-Solve the puzzles to progress.
-Keep track of discovered information and hidden clues.
-Continue until you uncover the treasure.
+1. Enter the game.
+2. Explore the available clues and challenges.
+3. Solve the puzzles to progress.
+4. Keep track of discovered information and hidden clues.
+5. Continue until you uncover the treasure.
 
 To create a production build:
 
@@ -67,16 +67,16 @@ To create a production build:
 
 If the website does not start correctly:
 
-Make sure Node.js is installed.
-Run npm install again to ensure all dependencies are installed.
-Check that your `.env` file contains the required variables.
-Make sure the development server is not already using the selected port.
-Check the browser console and terminal for error messages.
+1. Make sure Node.js is installed.
+2. Run npm install again to ensure all dependencies are installed.
+3. Check that your `.env` file contains the required variables.
+4. Make sure the development server is not already using the selected port(been there before).
+5. Check the browser console and terminal for error messages.
 
 To check your Node.js and npm versions:
 
-node --version
-npm --version
+`node --version`
+`npm --version`
 
 If dependencies become corrupted, try:
 
