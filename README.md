@@ -2,6 +2,14 @@
 
 The protoype for a mysterious web-based treasure-hunting game where players solve puzzles, decode hidden messages, and explore a world filled with secrets.
 
+## Made By
+Four Seasons Village is being developed by:
+| Team Member | Contact |
+|---|---|---|
+| tls123 | [Github](https://github.com/Tareq-Khalil) |
+| Mazen Khalil | [Github](https://github.com/mazenahmed1721)|
+| Mohamed Salama | [Github](https://github.com/MADO3308)
+---
 ## Description
 
 Treasure Hunter is a puzzle and exploration game built around discovering clues, solving ciphers, and uncovering hidden secrets. Players progress through different challenges where every solved puzzle brings them closer to the final treasure.
