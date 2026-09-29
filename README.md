@@ -75,13 +75,13 @@ If the website does not start correctly:
 
 To check your Node.js and npm versions:
 
-`node --version`
-`npm --version`
+- `node --version`
+- `npm --version`
 
 If dependencies become corrupted, try:
 
-`rm -rf node_modules`
-`npm install`
+- `rm -rf node_modules`
+- `npm install`
 
 On Windows PowerShell, you can instead remove the node_modules folder manually and run:
 
