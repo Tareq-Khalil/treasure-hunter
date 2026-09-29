@@ -5,7 +5,7 @@ The protoype for a mysterious web-based treasure-hunting game where players solv
 ## Made By
 Four Seasons Village is being developed by:
 | Team Member | Contact |
-|---|---|---|
+|---|---|
 | tls123 | [Github](https://github.com/Tareq-Khalil) |
 | Mazen Khalil | [Github](https://github.com/mazenahmed1721)|
 | Mohamed Salama | [Github](https://github.com/MADO3308)
