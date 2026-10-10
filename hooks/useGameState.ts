@@ -1,7 +1,7 @@
 'use client' ;
-import { useState, useEffect} from 'react';
+import { useState, useEffect, useRef, useCallback, useMemo} from 'react';
 import { GameState } from '@/types/game';
-import { STORY_NODES, LOCATIONS} from '@/lib/storyData';
+import { STORY_NODES, LOCATIONS, PUZZLE_COUNT} from '@/lib/storyData';
 import { createClient } from '@/lib/supabase/client';
 const INITIAL_STATE: GameState = {
     unlockedLocations: ['abandoned_dock'],
@@ -11,11 +11,31 @@ const INITIAL_STATE: GameState = {
     currentLocationId: 'abandoned_dock',
     dialogueHistory: []
 };
+const addUnique = (list:string[], item?:string)=>
+    item && !list.includes(item) ? [...list, item] : list;
+const locationForNode = (nodeId:string, fallback:string)=>
+    LOCATIONS.find(l => l.startNodeId === nodeId)?.id ?? fallback;
 export function useGameState() {
+    const supabase = useMemo(() =>createClient(),[]);
     const [gameState, setGameState] = useState<GameState>(INITIAL_STATE);
+    const stateRef = useRef<GameState>(INITIAL_STATE);
     const [loading, setLoading] = useState(true);
     const [cloudSynced, setCloudSynced] = useState(false);
-    const supabase = createClient();
+    const persist = useCallback(async(state:GameState)=>{
+        if (!supabase) return;
+        try{
+            const{data:{user}}=await supabase.auth.getUser();
+            if (!user) return;
+            await supabase.from('expedition_progress').upsert({
+                user_id:user.id,
+                unlocked_locations: state.unlockedLocations,
+                unlocked_clues: state.unlockedClues,
+                solved_puzzles:state.solvedPuzzles,
+                current_node: state.currentNodeId,
+                completion_percentage: Math.min(100,Math.round((state.solvedPuzzles.length/PUZZLE_COUNT)*100))
+            }, {onConflict:'user_id'});
+        } catch {}
+    }, [supabase]);
     useEffect(() => {
         async function loadProgress() {
             if (!supabase) {
@@ -29,15 +49,20 @@ export function useGameState() {
                       .from('expedition_progress')
                       .select('*')
                       .eq('user_id', user.id)
-                      .single();
+                      .maybeSingle();
                     if (data) {
-                        setGameState(prev => ({
+                        const prev= stateRef.current;
+                        const unlockedLocations:string[] = data.unlocked_locations || prev.unlockedLocations;
+                        const next: GameState={
                             ...prev,
-                            unlockedLocations: data.unlocked_locations || prev.unlockedLocations,
+                            unlockedLocations,
                             unlockedClues: data.unlocked_clues || prev.unlockedClues,
                             solvedPuzzles: data.solved_puzzles || prev.solvedPuzzles,
-                            currentNodeId: data.current_node || prev.currentNodeId
-                        }));
+                            currentNodeId: data.current_node || prev.currentNodeId,
+                            currentLocationId: unlockedLocations[unlockedLocations.length-1]|| prev.currentLocationId
+                        };
+                        stateRef.current= next;
+                        setGameState(next);
                     }
                     setCloudSynced(true);
                 }
@@ -45,52 +70,53 @@ export function useGameState() {
             setLoading(false);
         }
         loadProgress();
-    }, []);
-    const saveProgress = async (newState: Partial<GameState>) => {
-        const updated = { ...gameState, ...newState };
-        setGameState(updated);
-        if (!supabase) return;
-        try {
-            const { data: { user } } = await supabase.auth.getUser();
-            if (user) {
-                await supabase.from('expedition_progress').upsert({
-                    user_id: user.id,
-                    unlocked_locations: updated.unlockedLocations,
-                    unlocked_clues: updated.unlockedClues,
-                    solved_puzzles: updated.solvedPuzzles,
-                    current_node: updated.currentNodeId,
-                    completion_percentage: Math.min(100, Math.round((updated.solvedPuzzles.length/3) * 100))
-                }, { onConflict: 'user_id' });
-                setCloudSynced(true);
-            }
-        } catch {}
-    };
-    const advanceDialogue = (nextNodeId: string, unlockClueId?: string, unlockLocationId?: string) => {
-        const updatedClues = unlockClueId && !gameState.unlockedClues.includes(unlockClueId)
-        ? [...gameState.unlockedClues, unlockClueId]
-        : gameState.unlockedClues;
-        const updatedLocations = unlockLocationId && !gameState.unlockedLocations.includes(unlockLocationId)
-        ? [...gameState.unlockedLocations, unlockLocationId]
-        : gameState.unlockedLocations;
-        const currentNode = STORY_NODES[gameState.currentNodeId];
-        const newHistory = currentNode
-          ? [...gameState.dialogueHistory, { character: currentNode.characterId, text: currentNode.text}]
-          : gameState.dialogueHistory;
-          saveProgress({
-            currentNodeId: nextNodeId,
-            unlockedClues: updatedClues,
-            unlockedLocations: updatedLocations,
-            dialogueHistory: newHistory
-          });
-    };
-    const selectLocation = (locationId: string) => {
-        const targetLoc = LOCATIONS.find(l => l.id === locationId);
-        if(targetLoc && gameState.unlockedLocations.includes(locationId)){
-            saveProgress({
+    }, [supabase]);
+    const commit = useCallback((patch:Partial<GameState>)=>{
+        const next = { ...stateRef.current, ...patch};
+        stateRef.current=next;
+        setGameState(next);
+        void persist(next);
+    },[persist]);
+    const advanceDialogue = useCallback((nextNodeId: string, unlockClueId?: string, unlockLocationId?: string) => {
+        const s = stateRef.current;
+        const current = STORY_NODES[s.currentNodeId];
+        commit({
+            currentNodeId:nextNodeId,
+            currentLocationId:locationForNode(nextNodeId, s.currentLocationId),
+            unlockedClues:addUnique(s.unlockedClues, unlockClueId),
+            unlockedLocations:addUnique(s.unlockedLocations, unlockLocationId),
+            dialogueHistory:current 
+                ? [...s.dialogueHistory, {character:current.characterId, text:current.text}]
+                : s.dialogueHistory
+        });
+    }, [commit]);
+    const solvePuzzle=useCallback((
+        puzzleId:string,
+        nextNodeId:string,
+        unlockClueId?:string,
+        unlockLocationId?:string
+    )=>{
+        const s =stateRef.current;
+        const current = STORY_NODES[s.currentNodeId];
+        commit({
+            solvedPuzzles:addUnique(s.solvedPuzzles, puzzleId),
+            currentNodeId:nextNodeId,
+            currentLocationId:locationForNode(nextNodeId,s.currentLocationId),
+            unlockedClues:addUnique(s.unlockedClues, unlockClueId),
+            unlockedLocations:addUnique(s.unlockedLocations, unlockLocationId),
+            dialogueHistory:current
+                ? [...s.dialogueHistory,{character:current.characterId,text:current.text}]
+                : s.dialogueHistory
+        });
+    }, [commit]);
+    const selectLocation = useCallback((locationId: string) => {
+        const target = LOCATIONS.find(l => l.id === locationId);
+        if(target && stateRef.current.unlockedLocations.includes(locationId)){
+            commit({
                 currentLocationId: locationId,
-                currentNodeId: targetLoc.startNodeId
+                currentNodeId: target.startNodeId
             });
         }
-    };
-    return { gameState, loading, cloudSynced, advanceDialogue, selectLocation, saveProgress };
+    }, [commit]);
+    return { gameState, loading, cloudSynced, advanceDialogue, solvePuzzle, selectLocation };
 }

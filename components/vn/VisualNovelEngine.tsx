@@ -2,69 +2,68 @@
 import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { STORY_NODES, CHARACTERS } from '@/lib/storyData';
+import {DialogueNode} from '@/types/game';
 import { AnimePortrait } from './AnimePortrait';
 import { soundFx } from '@/lib/audio';
 interface VisualNovelEngineProps {
     nodeId: string;
     onChoiceSelect: (nextNodeId: string, unlockClueId?: string, unlockLocationId?: string) => void;
 }
-export const VisualNovelEngine: React.FC<VisualNovelEngineProps> = ({ nodeId, onChoiceSelect }) => {
-    const node = STORY_NODES[nodeId];
-    const [displayedText, setDisplayedText] = useState('');
-    const [isTyping, setIsTyping] = useState(true);
-    useEffect(() => {
-        if(!node) return;
-        setDisplayedText('');
-        setIsTyping(true);
-        let index = 0;
-        const timer = setInterval(() => {
-            if (index < node.text.length) {
-                setDisplayedText(prev => prev + node.text.charAt(index));
-                soundFx.playTypewriter();
-                index++;
-            } else {
-                setIsTyping(false);
-                clearInterval(timer);
-            }
-        }, 25);
-        return () => clearInterval(timer);
-    }, [nodeId, node]);
-    if (!node) return null;
-    const character = CHARACTERS[node.characterId];
-    return (
-        <div className="relative w-full max-w-5xl mx-auto flex flex-col md:flex-row items-center md:items-end gap-6 p-4">
-            <div className="flex-shrink-0">
-                <AnimePortrait characterId={node.characterId} expression={node.expression} />
-            </div>
-            <div className="flex-1 w-full bg-nautical-950/90 border-2 border-gold-500/40 backdrop-blur-md rounded-2xl p-6 shadow-2xl shadow-black/50 relative">
-                <div className="absolute -top-4 left-6 px-4 py-1 rounded-md font-serif text-sm font-bold shadow-lg border border-gold-400/50" style={{ backgroundColor: character?.themeColor || '#d4af37', color: '#071018' }}>
-                    {character?.name || 'System Notice'}
+const delayAfter = (ch:string) => ('.!?'.includes(ch) ? 230 : ',;:' .includes(ch) ? 110:24);
+function DialogueSlip({node, onChoiceSelect}:{node:DialogueNode; onChoiceSelect:VisualNovelEngineProps['onChoiceSelect']}){
+    const character=CHARACTERS[node.characterId];
+    const [shown,setShown] = useState(0);
+    const done= shown >=node.text.length;
+    useEffect(()=>{
+        if (done) return;
+        const prev = shown > 0 ? node.text.charAt(shown-1):'';
+        const timer = setTimeout(()=>{
+            if (node.text.charAt(shown).trim()) soundFx.playTypewriter();
+            setShown(shown+1);
+        }, delayAfter(prev));
+        return () => clearTimeout(timer);
+    },[shown,done,node.text]);
+    const hasChoices = !!node.choices && node.choices.length > 0;
+    return(
+        <div className="xp-slip-lift xp-lift">
+            <div className="xp-slip" onClick={()=>setShown(node.text.length)}>
+                <div className="xp-who">
+                    <span className="xp-name">{character?.name ?? 'Note'}</span>
+                    {character && <span className="xp-role">{character.role}</span>}
                 </div>
-                <p className="text-parchment font-serif text-lg leading-relaxed min-h-[5rem] pt-2">
-                    {displayedText}
-                    {isTyping && <span className="inline-block w-2 h-5 bg-gold-400 ml-1 animate-ping" />}
+                <p className="xp-line" aria-hidden>
+                    {node.text.slice(0,shown)}
+                    {!done && <span className="xp-caret"/>}
                 </p>
-                {!isTyping && node.choices && node.choices.length > 0 && (
-                    <div className="mt-4 space-y-2">
-                        {node.choices.map((choice, idx) => (
-                            <button key={idx}onClick={() => { soundFx.playClick(); onChoiceSelect(choice.nextNodeId, choice.unlockClueId, choice.unlockLocationId);}} className="w-full text-left px-4 py-2.5 rounded-lg bg-nautical-900/70 hover:bg-gold-500/15 border border-gold-500/25 hover:border-gold-400 text-parchment/90 hover:text-gold-300 font-medium transition-all duration-200 flex items-center justify-between group">
-                                <span>❖ {choice.text}</span>
-                                <span className="opacity-0 group-hover:opacity-100 text-gold-400 transition-opacity">➔</span>
-                            </button>
+                <p className="sr-only" aria-live="polite">{done ? node.text : ''}</p>
+                {done && hasChoices &&(
+                    <ul className="xp-choices">
+                        {node.choices!.map((choice,idx)=>(
+                            <li key={idx}>
+                                <button type="button" className="xp-choice" onClick={()=>{soundFx.playClick(); onChoiceSelect(choice.nextNodeId, choice.unlockClueId, choice.unlockLocationId);}}>
+                                    {choice.text}
+                                </button>
+                            </li>
                         ))}
-                    </div>
+                    </ul>
                 )}
-                {!isTyping && (!node.choices || node.choices.length === 0) && (
-                    <div className="mt-5 pt-4 border-t border-gold-500/20 flex flex-col sm:flex-row items-center justify-between gap-3">
-                        <p className="text-[11px] uppercase tracking-widest font-mono text-gold-400/80">
-                            &mdash; End of recovered log &mdash;
-                        </p>
-                        <Link href="/" className="px-4 py-2 rounded-lg bg-gold-500 hover:bg-gold-400 text-nautical-950 font-bold uppercase tracking-wider text-[11px] transition-all shadow-md">
-                            Return to Archive
-                        </Link>
+                {done && !hasChoices && !node.triggerPuzzle && (
+                    <div className="xp-end">
+                        <span>That&rsquo;s the last pageof the log.</span>
+                        <Link href="/" className="xp-back">Back to the title page</Link>
                     </div>
                 )}
             </div>
         </div>
+    );
+}
+export const VisualNovelEngine: React.FC<VisualNovelEngineProps> = ({ nodeId, onChoiceSelect }) => {
+    const node = STORY_NODES[nodeId];
+    if (!node) return null;
+    return(
+        <section className="xp-scene" aria-label="Story">
+            <AnimePortrait key={`p-${nodeId}`} characterId={node.characterId} expression={node.expression}/>
+            <DialogueSlip key={nodeId} node={node} onChoiceSelect={onChoiceSelect}/>
+        </section>
     );
 };
